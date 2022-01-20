@@ -4,8 +4,10 @@ import { BASE_URL, API_KEY } from '../constants'
 import Details from './Details'
 import Friend from './Friend'
 
+import { Spinner } from 'reactstrap';
+
 export default function App() {
-  const [friends, setFriends] = useState([])
+  const [friends, setFriends] = useState(null)
   const [currentFriendId, setCurrentFriendId] = useState('1')
 
   const openDetails = id => {
@@ -19,7 +21,9 @@ export default function App() {
   useEffect(() => {
     axios.get(`${BASE_URL}/friends?api_key=${API_KEY}`)
       .then(res => {
-        setFriends(res.data)
+        setTimeout(() => {
+          setFriends(res.data)
+        }, 5000)
       })
       .catch(err => {
         console.log(err)
@@ -30,9 +34,11 @@ export default function App() {
     <div className='container'>
       <h1>My friends:</h1>
       {
-        friends.map(fr => {
+        friends 
+        ? friends.map(fr => {
           return <Friend besty={fr.id % 2 === 0} key={fr.id} info={fr} action={openDetails} />
         })
+        : <Spinner>Loading...</Spinner>
       }
       {
         currentFriendId && <Details friendId={currentFriendId} close={closeDetails} />
