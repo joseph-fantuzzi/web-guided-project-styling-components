@@ -31,7 +31,7 @@ export default function App() {
       <h1>My friends:</h1>
       {
         friends.map(fr => {
-          return <Friend key={fr.id} info={fr} action={openDetails} />
+          return <Friend besty={fr.id % 2 === 0} key={fr.id} info={fr} action={openDetails} />
         })
       }
       {
